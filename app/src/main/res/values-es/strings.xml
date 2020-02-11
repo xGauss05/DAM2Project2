@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Practica 2</string>
+    <string name="about">Sobre nosotros</string>
+    <string name="action_sign_in">Loguéate o regístrate</string>
+    <string name="action_sign_in_short">Regístrate</string>
+    <string name="getCode">Coger código</string>
+    <string name="hint_email">Escribe su email</string>
+    <string name="hint_name">Escriba su nombre</string>
+    <string name="input_email">Introduzca su email</string>
+    <string name="insert_your_code">Introduzca su código</string>
+    <string name="invalid_password">La contraseña ha de ser >5 carácteres</string>
+    <string name="invalid_username">Usuario no valido</string>
+    <string name="my_photo">Mi foto</string>
+    <string name="play">Jugar</string>
+    <string name="prompt_password">Contraseña</string>
+    <string name="regEmail">Introduzca su email</string>
+    <string name="regEmailBtn">Recoger CODIGO</string>
+    <string name="settings">Ajustes</string>
+    <string name="welcome">Bienvenido !</string>
+    <string name="where_are_we">Donde estamos?</string>
+    <string name="title_activity_login">Registrarse</string>
+    <string name="registerTitle">Registrarse</string>
+    <string name="register">Registrarse</string>
+    <string name="registerTextView">Registrarse</string>
+    <string name="hintCode">Introduzca código</string>
+    <string name="titleCode">Código enviado al email</string>
+</resources>
