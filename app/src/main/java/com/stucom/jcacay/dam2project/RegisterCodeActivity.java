@@ -24,7 +24,7 @@ public class RegisterCodeActivity extends AppCompatActivity {
     EditText edCode;
     Button btnRegCode;
     String regEmail;
-
+    Token tokenObject,token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,12 +32,21 @@ public class RegisterCodeActivity extends AppCompatActivity {
         regEmail = getIntent().getStringExtra("regEmail");
         edCode = findViewById(R.id.regCode);
         btnRegCode = findViewById(R.id.btnRegCode);
+
         btnRegCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 registerUser();
             }
         });
+        tokenObject = new Token();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d("asd", "onPause() RegisterCode Activity");
+        token.saveToPrefs(this);
+        super.onPause();
     }
 
     protected void registerUser() {
@@ -50,9 +59,7 @@ public class RegisterCodeActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         Log.d("asd", response);
                         Gson gson = new Gson();
-                        Token token = gson.fromJson(response, Token.class);
-                        intent.putExtra("token", token.getData().toString());
-                        intent.putExtra("email", regEmail);
+                        token = gson.fromJson(response, Token.class);
                         startActivity(intent);
                     }
                 },

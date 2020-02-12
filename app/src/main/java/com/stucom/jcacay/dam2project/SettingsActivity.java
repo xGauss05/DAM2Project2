@@ -28,6 +28,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        Log.d("asd", "onCreate() Settings Activity");
         // Capture needed layout views
         edName = findViewById(R.id.edName);
         edEmail = findViewById(R.id.edEmail);
@@ -43,6 +44,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("asd", "onResume() Settings Activity");
         // Load player info from SharedPrefs
         player.loadFromPrefs(this);
         edName.setText(player.getName());
@@ -53,6 +55,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onPause() {
         // Save player info from SharedPrefs (save changes on name and email only)
+        Log.d("asd", "onPause() Settings Activity");
         player.setName(edName.getText().toString());
         player.setEmail(edEmail.getText().toString());
         player.saveToPrefs(this);

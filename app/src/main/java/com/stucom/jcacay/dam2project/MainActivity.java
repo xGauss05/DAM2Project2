@@ -9,11 +9,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.stucom.jcacay.dam2project.model.Player;
 import com.stucom.jcacay.dam2project.model.Token;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    String token = "", email = "";
+    String token, email;
     Token tokenObject;
 
     private static final int[] BUTTONS_ID = new int[]{
@@ -25,21 +24,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         Log.d("asd", "onCreate() Main Activity");
         setContentView(R.layout.activity_main);
-        Intent intentRegister = getIntent();
-        token = intentRegister.getStringExtra("token");
-        email = intentRegister.getStringExtra("email");
-
-        if (token == null) {
-            Intent intent = new Intent(MainActivity.this, RegisterEmailActivity.class);
-            startActivity(intent);
-        }
         for (int id : BUTTONS_ID) {
             Button button = findViewById(id);
             button.setOnClickListener(this);
         }
         tokenObject = new Token();
-        tokenObject.setData(token);
-        tokenObject.saveToPrefs(this);
     }
 
     @Override
@@ -48,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d("asd", "onResume() Main Activity");
         tokenObject.loadFromPrefs(this);
         token = tokenObject.getData();
+        System.out.println("asd onResume() Token: " + token);
     }
 
     @Override
@@ -58,33 +48,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onPause();
     }
 
-    public void saveToPrefs(Context context) {
-        SharedPreferences shPrefs = context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
-        SharedPreferences.Editor prefsEditor = shPrefs.edit();
-        prefsEditor.putString("token", token);
-        prefsEditor.putString("email", email);
-        prefsEditor.apply();
-    }
-
-    public void loadFromPrefs(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
-        this.token = prefs.getString("token", "");
-        this.email = prefs.getString("email", "");
-    }
-
     @Override
     public void onClick(View view) {
         Intent intent = null;
+        Log.d("asd", "asdasd"+token);
         switch (view.getId()) {
             case R.id.btnPlay:
                 intent = new Intent(MainActivity.this, PlayActivity.class);
                 break;
             case R.id.btnRanking:
-
-                intent = new Intent(MainActivity.this, RankingActivity.class);
+                if (token.equalsIgnoreCase("")) {
+                    intent = new Intent(MainActivity.this, RegisterEmailActivity.class);
+                } else {
+                    intent = new Intent(MainActivity.this, RankingActivity.class);
+                }
                 break;
             case R.id.btnSettings:
-                intent = new Intent(MainActivity.this, SettingsActivity.class);
+                if (token.equalsIgnoreCase("")) {
+                    intent = new Intent(MainActivity.this, RegisterEmailActivity.class);
+
+                } else {
+                    intent = new Intent(MainActivity.this, SettingsActivity.class);
+                }
                 break;
             case R.id.btnAbout:
                 intent = new Intent(MainActivity.this, AboutActivity.class);

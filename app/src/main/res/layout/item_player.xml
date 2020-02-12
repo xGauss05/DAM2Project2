@@ -23,13 +23,14 @@
 
     <TextView
         android:id="@+id/tvPlayerName"
-        android:layout_width="151dp"
-        android:layout_height="34dp"
+        android:layout_width="234dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="TextView"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.083"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/ivPlayerImage"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,10 +38,11 @@
         android:id="@+id/tvPlayerScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="20dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.049"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/ivPlayerImage"
         app:layout_constraintTop_toBottomOf="@+id/tvPlayerName" />
 </android.support.constraint.ConstraintLayout>

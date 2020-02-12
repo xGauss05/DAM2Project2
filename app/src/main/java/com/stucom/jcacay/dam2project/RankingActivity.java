@@ -25,9 +25,8 @@ import com.stucom.jcacay.dam2project.model.Player;
 import com.stucom.jcacay.dam2project.model.PlayerList;
 import com.stucom.jcacay.dam2project.model.Token;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public class RankingActivity extends AppCompatActivity {
     RecyclerView recyclerView;
@@ -42,13 +41,6 @@ public class RankingActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         token = new Token();
-        Intent intentRegister = getIntent();
-        token.setData(intentRegister.getStringExtra("token"));
-        token.saveToPrefs(this);
-        System.out.println("asd " + token.getData());
-        if (token.getData() != null) {
-            downloadUsers();
-        }
     }
 
     @Override
@@ -56,6 +48,7 @@ public class RankingActivity extends AppCompatActivity {
         super.onResume();
         Log.d("asd", "onResume() Ranking Activity");
         token.loadFromPrefs(this);
+        downloadUsers();
     }
 
     @Override
@@ -67,7 +60,7 @@ public class RankingActivity extends AppCompatActivity {
 
     protected void downloadUsers() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "https://api.flx.cat/dam2game/ranking?token=" + token.getData();
+        String url = "https://api.flx.cat/dam2game/ranking/?token=" + token.getData();
         StringRequest request = new StringRequest(
                 Request.Method.GET,
                 url,
@@ -126,7 +119,6 @@ public class RankingActivity extends AppCompatActivity {
             this.players = players;
         }
 
-
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -136,21 +128,19 @@ public class RankingActivity extends AppCompatActivity {
             return new ViewHolder(view);
         }
 
-
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             Log.d("asd", "onBindViewHolder() : " + position);
+            Collections.sort(players);
             Player player = players.get(position);
             holder.tvPlayerName.setText(player.getName());
-            holder.tvPlayerScore.setText((player.getTotalScore()));
+            holder.tvPlayerScore.setText((Integer.toString(player.getTotalScore())));
             Picasso.get().load(player.getImage()).into(holder.ivPlayerImage);
         }
-
 
         @Override
         public int getItemCount() {
             return players.size();
         }
     }
-
 }

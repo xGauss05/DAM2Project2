@@ -59,5 +59,6 @@ public class Token {
         SharedPreferences.Editor prefsEditor = prefs.edit();
         prefsEditor.putString("token", this.data);
         prefsEditor.apply();
+        prefsEditor.commit();
     }
 }

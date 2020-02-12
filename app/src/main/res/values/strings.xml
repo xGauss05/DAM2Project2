@@ -27,4 +27,6 @@
     <string name="regEmailBtn">Get CODE</string>
     <string name="titleCode">Code sent to your email</string>
     <string name="hintCode">Input code</string>
+    <string name="btnMessage">Send Message</string>
+    <string name="edMessage">Input message</string>
 </resources>
