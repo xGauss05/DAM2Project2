@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Practica 2</string>
     <string name="about">Sobre nosotros</string>
     <string name="action_sign_in">Loguéate o regístrate</string>
     <string name="action_sign_in_short">Regístrate</string>
@@ -25,4 +24,11 @@
     <string name="registerTextView">Registrarse</string>
     <string name="hintCode">Introduzca código</string>
     <string name="titleCode">Código enviado al email</string>
+    <string name="btnMessage">Enviar mensaje</string>
+    <string name="btnScore">Enviar puntuación</string>
+    <string name="edMessage">Introduce mensaje</string>
+    <string name="inputSimLevel">Introduzca el nivel que has jugado</string>
+    <string name="inputSimScore">Introduzca su puntuación</string>
+    <string name="tvAlertMessage">Mensaje enviado!</string>
+    <string name="tvScoreAlert">Puntuación enviada!</string>
 </resources>

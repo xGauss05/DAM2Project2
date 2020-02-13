@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Practica 2</string>
+    <string name="app_name" translatable="false">Practica 2</string>
     <string name="play">Play</string>
     <string name="ranking" translatable="false">Ranking</string>
     <string name="settings">Settings</string>
@@ -30,4 +30,8 @@
     <string name="btnMessage">Send Message</string>
     <string name="edMessage">Input message</string>
     <string name="tvAlertMessage">Message sent!</string>
+    <string name="inputSimScore">Input your score</string>
+    <string name="btnScore">Send score</string>
+    <string name="inputSimLevel">Input the level you played</string>
+    <string name="tvScoreAlert">Score sent!</string>
 </resources>
