@@ -7,6 +7,7 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
+
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
@@ -14,6 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".UnregisterActivity"></activity>
         <activity android:name=".RegisterCodeActivity" />
         <activity android:name=".RegisterEmailActivity" />
         <activity android:name=".PlayerDetailActivity" />
@@ -21,6 +23,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -28,6 +31,7 @@
         <activity android:name=".RankingActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".AboutActivity" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.stucom.jcacay.fileProvider"

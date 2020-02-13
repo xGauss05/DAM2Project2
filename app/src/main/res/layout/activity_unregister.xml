@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UnregisterActivity">
+
+    <TextView
+        android:id="@+id/tvAskUnregister"
+        android:layout_width="246dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/tvAskUnregister"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnDeleteY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="48dp"
+        android:text="@string/btnDeleteYes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAskUnregister" />
+
+    <Button
+        android:id="@+id/btnDeleteN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="40dp"
+        android:text="@string/btnDeleteNo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAskUnregister" />
+
+    <TextView
+        android:id="@+id/tvAskFullUnregister"
+        android:layout_width="246dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="48dp"
+        android:text="@string/tvAskFullUnregister"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnDeleteY" />
+
+    <Button
+        android:id="@+id/btnFullDeleteY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="48dp"
+        android:text="@string/btnFullDeleteY"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAskFullUnregister" />
+
+    <Button
+        android:id="@+id/btnFullDeleteN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="40dp"
+        android:text="@string/btnFullDeleteN"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAskFullUnregister" />
+
+</android.support.constraint.ConstraintLayout>

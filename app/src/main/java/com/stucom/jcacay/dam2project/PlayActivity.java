@@ -76,7 +76,6 @@ public class PlayActivity extends AppCompatActivity {
     protected void postScore() {
         RequestQueue queue = Volley.newRequestQueue(this);
         String URL = "https://api.flx.cat/dam2game/user/score";
-        Log.d("asd", token.getData() + " " + edLevel.getText().toString() + " " + edScore.getText());
         StringRequest request = new StringRequest(Request.Method.POST,
                 URL,
                 new Response.Listener<String>() {

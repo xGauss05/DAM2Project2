@@ -34,4 +34,10 @@
     <string name="btnScore">Send score</string>
     <string name="inputSimLevel">Input the level you played</string>
     <string name="tvScoreAlert">Score sent!</string>
+    <string name="tvAskUnregister">Do you want to delete this account?</string>
+    <string name="btnDeleteYes">Yes</string>
+    <string name="btnDeleteNo">No</string>
+    <string name="tvAskFullUnregister">Do you also want to delete all data?</string>
+    <string name="btnFullDeleteY">Yes</string>
+    <string name="btnFullDeleteN">No</string>
 </resources>

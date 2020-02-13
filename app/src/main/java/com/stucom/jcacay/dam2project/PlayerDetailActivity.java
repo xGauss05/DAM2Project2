@@ -71,7 +71,6 @@ public class PlayerDetailActivity extends AppCompatActivity {
                         CountDownTimer timer = new CountDownTimer(2000, 1000) {
                             public void onTick(long asd) {
                             }
-
                             public void onFinish() {
                                 tvAlertMessage.setVisibility(View.INVISIBLE);
                             }

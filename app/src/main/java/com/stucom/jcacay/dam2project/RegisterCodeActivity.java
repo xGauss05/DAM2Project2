@@ -24,7 +24,7 @@ public class RegisterCodeActivity extends AppCompatActivity {
     EditText edCode;
     Button btnRegCode;
     String regEmail;
-    Token tokenObject,token;
+    Token tokenObject, token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
