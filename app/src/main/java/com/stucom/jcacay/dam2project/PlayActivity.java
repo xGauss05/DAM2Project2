@@ -3,6 +3,8 @@ package com.stucom.jcacay.dam2project;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -32,13 +34,23 @@ public class PlayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
+
         token = new Token();
         player = new Player();
+
         edLevel = findViewById(R.id.edLevel);
         edScore = findViewById(R.id.edScore);
-        btnScore = findViewById(R.id.btnScore);
+
+        edLevel.setInputType(InputType.TYPE_CLASS_NUMBER);
+        edLevel.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
+
+        edScore.setInputType(InputType.TYPE_CLASS_NUMBER);
+        edScore.setFilters(new InputFilter[] { new InputFilter.LengthFilter(10) });
+
         tvAlertScore = findViewById(R.id.tvAlertScore);
         tvAlertScore.setVisibility(View.INVISIBLE);
+
+        btnScore = findViewById(R.id.btnScore);
         btnScore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
