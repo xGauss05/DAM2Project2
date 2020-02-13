@@ -52,4 +52,16 @@
             android:layout_height="wrap_content"
             android:hint="@string/edMessage" />
     </android.support.design.widget.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tvAlertMessage"
+        android:layout_width="240dp"
+        android:layout_height="57dp"
+        android:text="@string/tvAlertMessage"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnMessage"
+        app:layout_constraintVertical_bias="0.17000002" />
 </android.support.constraint.ConstraintLayout>

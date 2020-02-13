@@ -1,70 +1,89 @@
 package com.stucom.jcacay.dam2project;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.stucom.jcacay.dam2project.model.Player;
+import com.stucom.jcacay.dam2project.model.Token;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
-
     EditText edName, edEmail;
     ImageView imAvatar;
     Uri photoURI;
     Player player;
+    Token token;
+    Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         Log.d("asd", "onCreate() Settings Activity");
-        // Capture needed layout views
         edName = findViewById(R.id.edName);
         edEmail = findViewById(R.id.edEmail);
+        edEmail.setEnabled(false);
         imAvatar = findViewById(R.id.imAvatar);
-        // All buttons to this class (see implements in the class' declaration)
         findViewById(R.id.btnGallery).setOnClickListener(this);
         findViewById(R.id.btnCamera).setOnClickListener(this);
         findViewById(R.id.btnDelete).setOnClickListener(this);
-        // Instantiate player object
         player = new Player();
+        token = new Token();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         Log.d("asd", "onResume() Settings Activity");
-        // Load player info from SharedPrefs
         player.loadFromPrefs(this);
-        edName.setText(player.getName());
+        token.loadFromPrefs(this);
+        if (player.getName().equalsIgnoreCase("") || player.getName() == null) {
+            edName.setText("user");
+        } else {
+            edName.setText(player.getName());
+        }
         edEmail.setText(player.getEmail());
         setAvatarImage(player.getImage(), false);
     }
 
     @Override
     public void onPause() {
-        // Save player info from SharedPrefs (save changes on name and email only)
         Log.d("asd", "onPause() Settings Activity");
         player.setName(edName.getText().toString());
         player.setEmail(edEmail.getText().toString());
         player.saveToPrefs(this);
+        updateUser();
         super.onPause();
     }
 
     @Override
     public void onClick(View view) {
-        // All buttons come here, so we decide based on their ids
         switch (view.getId()) {
             case R.id.btnDelete:
                 deleteAvatar();
@@ -78,26 +97,52 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    // Needed for onActivityResult()
+    public void updateUser() {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "https://api.flx.cat/dam2game/user";
+        StringRequest request = new StringRequest(
+                Request.Method.PUT,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("asd updateUser", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("asd", "ERROR: " + error.getMessage());
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("token", token.getData());
+                params.put("name", player.getName());
+                bitmap = ((BitmapDrawable) imAvatar.getDrawable()).getBitmap();
+                params.put("image", encodeImage(bitmap));
+                return params;
+            }
+        };
+        queue.add(request);
+    }
+
     private static final int AVATAR_FROM_GALLERY = 1;
     private static final int AVATAR_FROM_CAMERA = 2;
 
     public void deleteAvatar() {
-        // In this case simply clear the image by pasing null
         setAvatarImage(null, true);
     }
 
     public void getAvatarFromGallery() {
-        // Call the Open Document intent searching for images
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("image/*");
         startActivityForResult(intent, AVATAR_FROM_GALLERY);
     }
 
     public void getAvatarFromCamera() {
-        // Prepare for storage (see FileProvider background documentation)
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        // Always this path
         File photo = new File(storageDir, "photo.jpg");
         try {
             boolean ok = photo.createNewFile();
@@ -109,7 +154,6 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             return;
         }
         Log.d("asd", "Writing photo to " + photo);
-        // Pass the photo path to the Intent and start it
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         try {
             photoURI = FileProvider.getUriForFile(this, "com.stucom.jcacay.fileProvider", photo);
@@ -122,16 +166,12 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Skip cancels & errors
-        if (resultCode != RESULT_OK) return;
-
+        if (resultCode != RESULT_OK) {
+            return;
+        }
         if (requestCode == AVATAR_FROM_GALLERY) {
-            // coming from gallery, the URI is in the intent's data
             photoURI = data.getData();
         }
-        // if camera, no action needed, as we set the URI when the intent was created
-
-        // now set the avatar
         String avatar = (photoURI == null) ? null : photoURI.toString();
         setAvatarImage(avatar, true);
     }
@@ -139,16 +179,25 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     public void setAvatarImage(String avatar, boolean saveToSharedPreferences) {
         Log.d("asd", "Avatar = " + avatar);
         if (avatar == null) {
-            // if null, set the default "unknown" avatar picture
             imAvatar.setImageResource(R.drawable.unknown);
         } else {
-            // the URI must be valid, so we set it to the ImageView
             Uri uri = Uri.parse(avatar);
+            Log.d("asd Uri", uri.toString());
             imAvatar.setImageURI(uri);
         }
-        if (!saveToSharedPreferences) return;
-        // comply if a save to prefs was requested
+        if (!saveToSharedPreferences) {
+            return;
+        }
+
         player.setImage(avatar);
         player.saveToPrefs(this);
+    }
+
+    private String encodeImage(Bitmap bm) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        byte[] byteArray = outputStream.toByteArray();
+        String encodedString = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        return encodedString;
     }
 }

@@ -29,4 +29,5 @@
     <string name="hintCode">Input code</string>
     <string name="btnMessage">Send Message</string>
     <string name="edMessage">Input message</string>
+    <string name="tvAlertMessage">Message sent!</string>
 </resources>

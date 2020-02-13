@@ -70,9 +70,9 @@ public class RankingActivity extends AppCompatActivity {
                         Log.d("asd", response);
                         Gson gson = new Gson();
                         PlayerList playerList = gson.fromJson(response, PlayerList.class);
-                        for (Player player : playerList.getData()) {
-                            Log.d("asd", "Player " + player.getName());
-                        }
+                        //for (Player player : playerList.getData()) {
+                        //    Log.d("asd", "Player " + player.getName());
+                        //}
                         PlayerAdapter adapter = new PlayerAdapter(playerList.getData());
                         recyclerView.setAdapter(adapter);
                     }
@@ -123,8 +123,7 @@ public class RankingActivity extends AppCompatActivity {
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             Log.d("asd", "onCreateViewHolder()");
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_player, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_player, parent, false);
             return new ViewHolder(view);
         }
 

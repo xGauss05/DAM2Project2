@@ -1,5 +1,6 @@
 package com.stucom.jcacay.dam2project;
 
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,8 +22,12 @@ import com.stucom.jcacay.dam2project.model.Player;
 import com.stucom.jcacay.dam2project.model.PlayerDetail;
 import com.stucom.jcacay.dam2project.model.Token;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Timer;
+
 public class PlayerDetailActivity extends AppCompatActivity {
-    TextView tvPlayerNameDet;
+    TextView tvPlayerNameDet, tvAlertMessage;
     ImageView ivPlayerImgDet;
     Button btnMessage;
     EditText edMessage;
@@ -38,6 +43,8 @@ public class PlayerDetailActivity extends AppCompatActivity {
         ivPlayerImgDet = findViewById(R.id.ivPlayerImgDet);
         btnMessage = findViewById(R.id.btnMessage);
         edMessage = findViewById(R.id.edMessage);
+        tvAlertMessage = findViewById(R.id.tvAlertMessage);
+        tvAlertMessage.setVisibility(View.INVISIBLE);
         btnMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,15 +59,23 @@ public class PlayerDetailActivity extends AppCompatActivity {
         super.onResume();
         token.loadFromPrefs(this);
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "https://api.flx.cat/dam2game/message/" + id + "?token=" + token.getData() + "&text=" + edMessage.getText().toString();
+        String url = "https://api.flx.cat/dam2game/message/" + id;
         StringRequest request = new StringRequest(
-                Request.Method.GET,
+                Request.Method.PUT,
                 url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("asd", response);
-                        // mostrar mensaje enviado correcto
+                        Log.d("asd Mensaje", response);
+                        tvAlertMessage.setVisibility(View.VISIBLE);
+                        CountDownTimer timer = new CountDownTimer(2000, 1000) {
+                            public void onTick(long asd) {
+                            }
+
+                            public void onFinish() {
+                                tvAlertMessage.setVisibility(View.INVISIBLE);
+                            }
+                        }.start();
                     }
                 },
                 new Response.ErrorListener() {
@@ -68,8 +83,15 @@ public class PlayerDetailActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         Log.d("asd", "ERROR: " + error.getMessage());
                     }
-                }
-        );
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("token", token.getData());
+                params.put("text", edMessage.getText().toString());
+                return params;
+            }
+        };
         queue.add(request);
     }
 

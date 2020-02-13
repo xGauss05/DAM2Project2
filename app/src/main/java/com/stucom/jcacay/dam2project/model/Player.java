@@ -124,6 +124,12 @@ public class Player implements Comparable<Player> {
         prefsEditor.commit();
     }
 
+    public void resetPrefs(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor = prefs.edit();
+        prefsEditor.clear().commit();
+    }
+
     @Override
     public int compareTo(@NonNull Player player) {
         if (this.totalScore < player.totalScore) {

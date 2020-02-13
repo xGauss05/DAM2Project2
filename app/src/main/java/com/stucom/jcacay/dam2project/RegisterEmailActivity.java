@@ -24,10 +24,11 @@ import java.util.Map;
 public class RegisterEmailActivity extends AppCompatActivity {
     EditText edEmail;
     Button btnRegEmail;
-
+    Player player;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("asd", "onCreate() Register Email Activity");
         setContentView(R.layout.activity_register_email);
         edEmail = findViewById(R.id.regEmail);
         btnRegEmail = findViewById(R.id.btnRegEmail);
@@ -37,6 +38,19 @@ public class RegisterEmailActivity extends AppCompatActivity {
                 postEmail();
             }
         });
+        player = new Player();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        player.resetPrefs(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        player.saveToPrefs(this);
     }
 
     protected void postEmail() {
@@ -49,6 +63,7 @@ public class RegisterEmailActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         Log.d("asd", response);
                         intent.putExtra("regEmail", edEmail.getText().toString());
+                        player.setEmail(edEmail.getText().toString());
                         startActivity(intent);
                     }
                 },
