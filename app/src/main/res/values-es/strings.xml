@@ -31,4 +31,7 @@
     <string name="inputSimScore">Introduzca su puntuación</string>
     <string name="tvAlertMessage">Mensaje enviado!</string>
     <string name="tvScoreAlert">Puntuación enviada!</string>
+    <string name="btnDeleteAcc">Borrar cuenta</string>
+    <string name="tvAskFullUnregister">Quieres borrar los datos del servidor?</string>
+    <string name="tvAskUnregister">Quieres borrar esta cuenta?</string>
 </resources>

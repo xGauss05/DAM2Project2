@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Player implements Comparable<Player> {
     @SerializedName("id")
     private int id;
@@ -25,6 +27,8 @@ public class Player implements Comparable<Player> {
     private int lastLevel;
     @SerializedName("lastScore")
     private int lastScore;
+    @SerializedName("scores")
+    private List<Scores> scores;
 
     public Player() {
     }
@@ -35,6 +39,14 @@ public class Player implements Comparable<Player> {
 
     public void setTeamId(int teamId) {
         this.teamId = teamId;
+    }
+
+    public List<Scores> getScores() {
+        return scores;
+    }
+
+    public void setScores(List<Scores> scores) {
+        this.scores = scores;
     }
 
     public int getId() {
@@ -127,7 +139,9 @@ public class Player implements Comparable<Player> {
     public void resetPrefs(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
         SharedPreferences.Editor prefsEditor = prefs.edit();
-        prefsEditor.clear().commit();
+        prefsEditor.clear();
+        prefsEditor.apply();
+        prefsEditor.commit();
     }
 
     @Override

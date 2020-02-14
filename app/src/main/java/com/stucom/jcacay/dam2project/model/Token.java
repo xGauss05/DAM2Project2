@@ -61,4 +61,13 @@ public class Token {
         prefsEditor.apply();
         prefsEditor.commit();
     }
+
+    public void resetPrefs(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor = prefs.edit();
+        prefsEditor.clear();
+        prefsEditor.apply();
+        prefsEditor.commit();
+
+    }
 }

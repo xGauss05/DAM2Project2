@@ -2,11 +2,9 @@ package com.stucom.jcacay.dam2project;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
@@ -14,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -23,12 +22,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 import com.stucom.jcacay.dam2project.model.Player;
+import com.stucom.jcacay.dam2project.model.Ranking;
 import com.stucom.jcacay.dam2project.model.Token;
+import com.stucom.jcacay.dam2project.model.User;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +42,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     Player player;
     Token token;
     Bitmap bitmap;
+    Button btnDeleteAcc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,14 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         edName = findViewById(R.id.edName);
         edEmail = findViewById(R.id.edEmail);
         edEmail.setEnabled(false);
+        btnDeleteAcc = findViewById(R.id.btnDeleteAcc);
+        btnDeleteAcc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SettingsActivity.this, UnregisterActivity.class);
+                startActivity(intent);
+            }
+        });
         imAvatar = findViewById(R.id.imAvatar);
         findViewById(R.id.btnGallery).setOnClickListener(this);
         findViewById(R.id.btnCamera).setOnClickListener(this);
@@ -61,15 +72,21 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     public void onResume() {
         super.onResume();
         Log.d("asd", "onResume() Settings Activity");
-        player.loadFromPrefs(this);
         token.loadFromPrefs(this);
+        player.loadFromPrefs(this);
+        edEmail.setText(player.getEmail());
+        
+        if (player.getImage() != null) {
+            Picasso.get().load(player.getImage()).into(imAvatar);
+        } else {
+            setAvatarImage(player.getImage(), false);
+        }
+
         if (player.getName().equalsIgnoreCase("") || player.getName() == null) {
             edName.setText("user");
         } else {
             edName.setText(player.getName());
         }
-        edEmail.setText(player.getEmail());
-        setAvatarImage(player.getImage(), false);
     }
 
     @Override
@@ -97,7 +114,32 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    public void updateUser() {
+    protected void getUser() {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "https://api.flx.cat/dam2game/user/?token=" + token.getData();
+        StringRequest request = new StringRequest(
+                Request.Method.GET,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("asd", response);
+                        Gson gson = new Gson();
+                        User user = gson.fromJson(response, User.class);
+                        player = user.getData();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("asd", "ERROR: " + error.getMessage());
+                    }
+                }
+        );
+        queue.add(request);
+    }
+
+    protected void updateUser() {
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "https://api.flx.cat/dam2game/user";
         StringRequest request = new StringRequest(

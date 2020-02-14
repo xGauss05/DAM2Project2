@@ -14,9 +14,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
 import com.stucom.jcacay.dam2project.model.Player;
-import com.stucom.jcacay.dam2project.model.PlayerList;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,6 +51,9 @@ public class RegisterEmailActivity extends AppCompatActivity {
         player.saveToPrefs(this);
     }
 
+    /**
+     * Peticion a la API para registrar un email y que te devuelva un codigo al email
+     */
     protected void postEmail() {
         RequestQueue queue = Volley.newRequestQueue(this);
         final Intent intent = new Intent(RegisterEmailActivity.this, RegisterCodeActivity.class);

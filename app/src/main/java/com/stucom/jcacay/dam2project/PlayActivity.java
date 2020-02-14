@@ -45,7 +45,7 @@ public class PlayActivity extends AppCompatActivity {
         edLevel.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
 
         edScore.setInputType(InputType.TYPE_CLASS_NUMBER);
-        edScore.setFilters(new InputFilter[] { new InputFilter.LengthFilter(10) });
+        edScore.setFilters(new InputFilter[] { new InputFilter.LengthFilter(9) });
 
         tvAlertScore = findViewById(R.id.tvAlertScore);
         tvAlertScore.setVisibility(View.INVISIBLE);

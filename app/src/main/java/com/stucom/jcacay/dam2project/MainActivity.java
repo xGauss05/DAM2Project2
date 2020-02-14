@@ -7,12 +7,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.stucom.jcacay.dam2project.model.Player;
 import com.stucom.jcacay.dam2project.model.Token;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    String token, email;
-    Token tokenObject;
 
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    Token token;
+    Player player;
     private static final int[] BUTTONS_ID = new int[]{
             R.id.btnPlay, R.id.btnRanking, R.id.btnSettings, R.id.btnAbout
     };
@@ -26,43 +27,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Button button = findViewById(id);
             button.setOnClickListener(this);
         }
-        tokenObject = new Token();
+        token = new Token();
+        player = new Player();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         Log.d("asd", "onResume() Main Activity");
-        tokenObject.loadFromPrefs(this);
-        token = tokenObject.getData();
-        System.out.println("asd onResume() Token: " + token);
+        token.loadFromPrefs(this);
+        player.loadFromPrefs(this);
+        Log.d("asd", "onResume() Token: " + token.getData());
+        Log.d("asd", "onResume() Email: " + player.getEmail());
     }
+
 
     @Override
     public void onPause() {
         Log.d("asd", "onPause() Main Activity");
-        tokenObject.setData(token);
-        tokenObject.saveToPrefs(this);
+        token.saveToPrefs(this);
+        player.saveToPrefs(this);
         super.onPause();
     }
 
     @Override
     public void onClick(View view) {
         Intent intent = null;
-        Log.d("asd", "asdasd"+token);
+        Log.d("asd", "asd " + token.getData());
         switch (view.getId()) {
             case R.id.btnPlay:
                 intent = new Intent(MainActivity.this, PlayActivity.class);
                 break;
             case R.id.btnRanking:
-                if (token.equalsIgnoreCase("")) {
+                if (token.getData().equalsIgnoreCase("")) {
                     intent = new Intent(MainActivity.this, RegisterEmailActivity.class);
                 } else {
                     intent = new Intent(MainActivity.this, RankingActivity.class);
                 }
                 break;
             case R.id.btnSettings:
-                if (token.equalsIgnoreCase("")) {
+                if (token.getData().equalsIgnoreCase("")) {
                     intent = new Intent(MainActivity.this, RegisterEmailActivity.class);
 
                 } else {
@@ -76,8 +80,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (intent == null) {
             return;
         }
-        intent.putExtra("token", tokenObject.getData());
-        intent.putExtra("email", email);
         startActivity(intent);
     }
 }

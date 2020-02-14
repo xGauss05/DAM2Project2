@@ -1,5 +1,6 @@
 package com.stucom.jcacay.dam2project;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -24,7 +26,9 @@ public class RegisterCodeActivity extends AppCompatActivity {
     EditText edCode;
     Button btnRegCode;
     String regEmail;
-    Token tokenObject, token;
+    Token token;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,14 +36,18 @@ public class RegisterCodeActivity extends AppCompatActivity {
         regEmail = getIntent().getStringExtra("regEmail");
         edCode = findViewById(R.id.regCode);
         btnRegCode = findViewById(R.id.btnRegCode);
-
         btnRegCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 registerUser();
             }
         });
-        tokenObject = new Token();
+        token = new Token();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -49,9 +57,11 @@ public class RegisterCodeActivity extends AppCompatActivity {
         super.onPause();
     }
 
+    /**
+     * Peticion a la API para registrar el usuario con codigo incluido
+     */
     protected void registerUser() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        final Intent intent = new Intent(RegisterCodeActivity.this, MainActivity.class);
         String URL = "https://api.flx.cat/dam2game/register";
         StringRequest request = new StringRequest(Request.Method.POST, URL,
                 new Response.Listener<String>() {
@@ -60,6 +70,7 @@ public class RegisterCodeActivity extends AppCompatActivity {
                         Log.d("asd", response);
                         Gson gson = new Gson();
                         token = gson.fromJson(response, Token.class);
+                        Intent intent = new Intent(RegisterCodeActivity.this, MainActivity.class);
                         startActivity(intent);
                     }
                 },
@@ -67,6 +78,11 @@ public class RegisterCodeActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.d("asd", "ERROR: " + error.getMessage());
+                        Context context = getApplicationContext();
+                        CharSequence text = "ERROR CODE !";
+                        int duration = Toast.LENGTH_SHORT;
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
                     }
                 }) {
             @Override

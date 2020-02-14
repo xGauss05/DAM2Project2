@@ -22,7 +22,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.stucom.jcacay.dam2project.model.Player;
-import com.stucom.jcacay.dam2project.model.PlayerList;
+import com.stucom.jcacay.dam2project.model.Ranking;
 import com.stucom.jcacay.dam2project.model.Token;
 
 import java.util.Collections;
@@ -69,10 +69,7 @@ public class RankingActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         Log.d("asd", response);
                         Gson gson = new Gson();
-                        PlayerList playerList = gson.fromJson(response, PlayerList.class);
-                        //for (Player player : playerList.getData()) {
-                        //    Log.d("asd", "Player " + player.getName());
-                        //}
+                        Ranking playerList = gson.fromJson(response, Ranking.class);
                         PlayerAdapter adapter = new PlayerAdapter(playerList.getData());
                         recyclerView.setAdapter(adapter);
                     }

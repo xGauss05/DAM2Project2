@@ -1,7 +1,6 @@
 package com.stucom.jcacay.dam2project;
 
 import android.content.Intent;
-import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,7 +25,7 @@ public class UnregisterActivity extends AppCompatActivity {
     Token token;
     Button btnDeleteY, btnDeleteN, btnFullDeleteY, btnFullDeleteN;
     TextView tvAskFullUnregister;
-    boolean fullDelete = false;
+    boolean fullDelete = false, deleted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +36,7 @@ public class UnregisterActivity extends AppCompatActivity {
         player = new Player();
 
         assignComponents();
+
         tvAskFullUnregister.setVisibility(View.INVISIBLE);
         btnFullDeleteY.setVisibility(View.INVISIBLE);
         btnFullDeleteN.setVisibility(View.INVISIBLE);
@@ -53,8 +53,7 @@ public class UnregisterActivity extends AppCompatActivity {
         btnDeleteN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(UnregisterActivity.this, MainActivity.class);
-                startActivity(intent);
+                returnToMainActivity();
             }
         });
 
@@ -62,7 +61,9 @@ public class UnregisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 fullDelete = true;
+                deleted = true;
                 unregisterUser();
+                returnToMainActivity();
 
             }
         });
@@ -71,18 +72,24 @@ public class UnregisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 fullDelete = false;
+                deleted = true;
                 unregisterUser();
+                returnToMainActivity();
             }
         });
     }
 
+    protected void returnToMainActivity() {
+        Intent intent = new Intent(UnregisterActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
 
     protected void assignComponents() {
-        btnDeleteY.findViewById(R.id.btnDeleteY);
-        btnDeleteN.findViewById(R.id.btnDeleteN);
-        btnFullDeleteN.findViewById(R.id.btnFullDeleteN);
-        btnFullDeleteY.findViewById(R.id.btnFullDeleteY);
-        tvAskFullUnregister.findViewById(R.id.tvAskFullUnregister);
+        btnDeleteY = findViewById(R.id.btnDeleteY);
+        btnDeleteN = findViewById(R.id.btnDeleteN);
+        btnFullDeleteN = findViewById(R.id.btnFullDeleteN);
+        btnFullDeleteY = findViewById(R.id.btnFullDeleteY);
+        tvAskFullUnregister = findViewById(R.id.tvAskFullUnregister);
     }
 
     protected void unregisterUser() {
@@ -94,7 +101,6 @@ public class UnregisterActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Log.d("asd", response);
-
                     }
                 },
                 new Response.ErrorListener() {
@@ -117,14 +123,23 @@ public class UnregisterActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("asd", "onResume() Unregister Activity");
+        fullDelete = false;
+        deleted = false;
         player.loadFromPrefs(this);
         token.loadFromPrefs(this);
     }
 
     @Override
     protected void onPause() {
+        Log.d("asd", "onPause() Unregister Activity");
+        if (deleted) {
+            player = new Player();
+            token = new Token();
+        }
         player.saveToPrefs(this);
         token.saveToPrefs(this);
+
         super.onPause();
     }
 
